@@ -5,7 +5,10 @@
   "description": "Les repères Open Food Facts pendant vos courses E.Leclerc Drive.",
   "browser_specific_settings": {
     "gecko": {
-      "id": "qualite-drive-off-prototype@local"
+      "id": "qualite-drive-off-prototype@local",
+      "data_collection_permissions": {
+        "required": ["websiteContent"]
+      }
     }
   },
   "permissions": ["storage"],

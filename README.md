@@ -7,6 +7,7 @@ Extension Firefox pour E.Leclerc Drive. Sur les fiches et les listes où le code
 - Les encarts portent clairement la mention **Open Food Facts**. Ils ne sont pas des notes Yuka.
 - Le code-barres EAN peut être affiché pour être scanné dans l’application Yuka, afin de consulter la note officielle dans Yuka.
 - Les résultats sont limités à dix nouveaux produits par page, espacés de quatre secondes, puis mis en cache 24 heures dans Firefox.
+- Le code-barres du produit est envoyé à Open Food Facts uniquement pour demander ses données. Aucune donnée de compte Leclerc ni donnée personnelle n’est transmise.
 
 ## Permissions
 
