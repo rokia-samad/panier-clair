@@ -177,6 +177,13 @@
     return `${additives.length} additif${additives.length > 1 ? "s" : ""} renseigné${additives.length > 1 ? "s" : ""}`;
   }
 
+  function makeElement(tagName, className, text) {
+    const element = document.createElement(tagName);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  }
+
   // A self-contained EAN renderer: no image is fetched and the bars encode the
   // actual GTIN read from Leclerc. Most grocery products use EAN-13; EAN-8 is
   // retained for the smaller codes sometimes used on individual items.
@@ -199,63 +206,102 @@
     } else if (code.length === 8) {
       pattern = `101${[...code.slice(0, 4)].map((digit) => L[Number(digit)]).join("")}01010${[...code.slice(4)].map((digit) => R[Number(digit)]).join("")}101`;
     } else {
-      return "";
+      return null;
     }
     const scale = 3;
     const margin = 10;
     const barHeight = 86;
     const width = (pattern.length + margin * 2) * scale;
-    const bars = [...pattern].map((bit, index) => bit === "1"
-      ? `<rect x="${(margin + index) * scale}" y="0" width="${scale}" height="${barHeight}"/>`
-      : "").join("");
-    return `<svg class="barcode" role="img" aria-label="Code-barres ${code}" viewBox="0 0 ${width} 108" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="white"/>${bars}<text x="50%" y="103" text-anchor="middle">${code}</text></svg>`;
+    const svgNs = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNs, "svg");
+    svg.classList.add("barcode");
+    svg.setAttribute("role", "img");
+    svg.setAttribute("aria-label", `Code-barres ${code}`);
+    svg.setAttribute("viewBox", `0 0 ${width} 108`);
+    const background = document.createElementNS(svgNs, "rect");
+    background.setAttribute("width", "100%");
+    background.setAttribute("height", "100%");
+    background.setAttribute("fill", "white");
+    svg.append(background);
+    for (const [index, bit] of [...pattern].entries()) {
+      if (bit !== "1") continue;
+      const bar = document.createElementNS(svgNs, "rect");
+      bar.setAttribute("x", String((margin + index) * scale));
+      bar.setAttribute("y", "0");
+      bar.setAttribute("width", String(scale));
+      bar.setAttribute("height", String(barHeight));
+      svg.append(bar);
+    }
+    const label = document.createElementNS(svgNs, "text");
+    label.setAttribute("x", "50%");
+    label.setAttribute("y", "103");
+    label.setAttribute("text-anchor", "middle");
+    label.textContent = code;
+    svg.append(label);
+    return svg;
   }
 
   function makeWidget(barcode) {
     const host = document.createElement("span");
     host.className = "qd-off-host";
     const shadow = host.attachShadow({ mode: "open" });
-    shadow.innerHTML = `
-      <style>
-        :host { all: initial; display: inline-block; font-family: system-ui, -apple-system, sans-serif; }
-        .card { box-sizing: border-box; margin: 6px 0; padding: 8px; max-width: 330px; border: 1px solid #c8d9cc; border-radius: 8px; background: #f6fbf7; color: #16331e; font-size: 12px; line-height: 1.35; }
-        .title { font-weight: 700; margin-bottom: 5px; }
-        .grid { display: flex; flex-wrap: wrap; gap: 4px; }
-        .chip { border-radius: 999px; padding: 3px 6px; background: #e3efe5; white-space: nowrap; }
-        .nutri-a { background: #0b8a3b; color: white; } .nutri-b { background: #4cae4f; color: white; } .nutri-c { background: #f3c242; color: #3a2b00; } .nutri-d { background: #eb7a34; color: white; } .nutri-e { background: #d9423a; color: white; }
-        button { margin-top: 6px; padding: 0; border: 0; background: transparent; color: #1c5d31; font: inherit; text-decoration: underline; cursor: pointer; }
-        .barcode-wrap { margin-top: 7px; } .barcode { display: block; width: min(100%, 310px); height: auto; }
-        .muted { color: #53645a; } .error { color: #9d241d; }
-      </style>
-      <div class="card"><div class="title">Qualité — Open Food Facts</div><div class="muted">Recherche en cours…</div></div>`;
-    return { host, shadow, barcode };
+    const style = document.createElement("style");
+    style.textContent = `
+      :host { all: initial; display: inline-block; font-family: system-ui, -apple-system, sans-serif; }
+      .card { box-sizing: border-box; margin: 6px 0; padding: 8px; max-width: 330px; border: 1px solid #c8d9cc; border-radius: 8px; background: #f6fbf7; color: #16331e; font-size: 12px; line-height: 1.35; }
+      .title { font-weight: 700; margin-bottom: 5px; } .grid { display: flex; flex-wrap: wrap; gap: 4px; }
+      .chip { border-radius: 999px; padding: 3px 6px; background: #e3efe5; white-space: nowrap; }
+      .nutri-a { background: #0b8a3b; color: white; } .nutri-b { background: #4cae4f; color: white; } .nutri-c { background: #f3c242; color: #3a2b00; } .nutri-d { background: #eb7a34; color: white; } .nutri-e { background: #d9423a; color: white; }
+      button { margin-top: 6px; padding: 0; border: 0; background: transparent; color: #1c5d31; font: inherit; text-decoration: underline; cursor: pointer; }
+      .barcode-wrap { margin-top: 7px; } .barcode { display: block; width: min(100%, 310px); height: auto; }
+      .muted { color: #53645a; } .error { color: #9d241d; }`;
+    const card = makeElement("div", "card");
+    card.append(makeElement("div", "title", "Qualité — Open Food Facts"));
+    card.append(makeElement("div", "muted", "Recherche en cours…"));
+    shadow.append(style, card);
+    return { host, shadow, card, barcode };
+  }
+
+  function setMessage(widget, message, className = "muted") {
+    widget.card.replaceChildren(
+      makeElement("div", "title", "Qualité — Open Food Facts"),
+      makeElement("div", className, message)
+    );
   }
 
   function renderProduct(widget, product) {
-    const container = widget.shadow.querySelector(".card");
     if (!product) {
-      container.innerHTML = `<div class="title">Qualité — Open Food Facts</div><div class="muted">Produit non trouvé dans Open Food Facts.</div>`;
+      setMessage(widget, "Produit non trouvé dans Open Food Facts.");
       return;
     }
     const grade = String(product.nutriscore_grade || "?").toUpperCase();
     const gradeClass = /^[A-E]$/.test(grade) ? `nutri-${grade.toLowerCase()}` : "";
     const nova = product.nova_group ? `NOVA ${product.nova_group}` : "NOVA non renseigné";
-    container.innerHTML = `
-      <div class="title">Qualité — Open Food Facts</div>
-      <div class="grid">
-        <span class="chip ${gradeClass}">Nutri-Score ${grade}</span>
-        <span class="chip">${nova}</span>
-        <span class="chip">${additiveLabel(product)}</span>
-      </div>
-      <button type="button">Afficher le code-barres à scanner avec Yuka</button>
-      <div class="barcode-wrap" hidden>${eanSvg(widget.barcode)}<div class="muted">Scanne ce code dans l’application Yuka pour voir sa note officielle.</div></div>`;
-    container.querySelector("button").addEventListener("click", () => {
-      container.querySelector(".barcode-wrap").hidden = false;
+    const grid = makeElement("div", "grid");
+    grid.append(
+      makeElement("span", `chip ${gradeClass}`, `Nutri-Score ${grade}`),
+      makeElement("span", "chip", nova),
+      makeElement("span", "chip", additiveLabel(product))
+    );
+    const button = makeElement("button", "", "Afficher le code-barres à scanner avec Yuka");
+    button.type = "button";
+    const barcodeWrap = makeElement("div", "barcode-wrap");
+    barcodeWrap.hidden = true;
+    const barcode = eanSvg(widget.barcode);
+    if (barcode) barcodeWrap.append(barcode);
+    barcodeWrap.append(makeElement("div", "muted", barcode
+      ? "Scanne ce code dans l’application Yuka pour voir sa note officielle."
+      : `Code-barres : ${widget.barcode}`));
+    button.addEventListener("click", () => {
+      barcodeWrap.hidden = false;
     });
+    widget.card.replaceChildren(
+      makeElement("div", "title", "Qualité — Open Food Facts"), grid, button, barcodeWrap
+    );
   }
 
   function renderError(widget) {
-    widget.shadow.querySelector(".card").innerHTML = `<div class="title">Qualité — Open Food Facts</div><div class="error">Données indisponibles pour le moment.</div>`;
+    setMessage(widget, "Données indisponibles pour le moment.", "error");
   }
 
   function mount(target) {
