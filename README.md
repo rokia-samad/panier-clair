@@ -29,3 +29,5 @@ L’extension ne lit ni l’historique, ni les onglets, ni les données de compt
 ## Installation durable
 
 Le paquet prêt à signer est `dist/panier-clair-0.2.0-unsigned.xpi`. Firefox standard demande une signature Mozilla : la procédure est dans [AMO-SUBMISSION.md](AMO-SUBMISSION.md).
+
+La politique de confidentialité est dans [PRIVACY.md](PRIVACY.md).
