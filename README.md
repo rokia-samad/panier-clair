@@ -1,17 +1,17 @@
 # Panier Etiq — Nutri-Score, NOVA et additifs sur E.Leclerc Drive
 
-Panier Etiq est une extension Firefox qui affiche directement pendant vos courses sur **E.Leclerc Drive** le **Nutri-Score**, le **groupe NOVA** et les **additifs renseignés** dans **Open Food Facts**. Cliquez sur le nombre d’additifs pour en consulter le détail.
+Panier Etiq est une extension Firefox pour **E.Leclerc Drive**. Elle affiche directement pendant les courses le **Nutri-Score**, le **groupe NOVA** et les additifs renseignés dans **Open Food Facts**. Cliquez sur Nutri-Score ou NOVA pour ouvrir une page d’explication ; cliquez sur le nombre d’additifs pour afficher leur détail, puis sur un additif pour consulter sa fiche Open Food Facts.
 
 [Installer Panier Etiq sur Mozilla Add-ons](https://addons.mozilla.org/fr/firefox/addon/panier-etiq/).
 
-Panier Etiq n’affiche pas de note Yuka : le code-barres peut être affiché pour un scan manuel dans l’application Yuka. Le projet est indépendant et ne collecte pas de données personnelles.
+Pour consulter les informations que **Yuka** propose sur un produit, affichez son code-barres dans Panier Etiq et scannez-le manuellement dans l’application Yuka. La note consultée est fournie par Yuka : Panier Etiq ne calcule ni n’affiche de note Yuka. Le projet est indépendant et ne collecte pas de données personnelles.
 
 Le code source est réparti dans `src/`. Pour modifier l’extension, voir [ARCHITECTURE.md](ARCHITECTURE.md), puis lancer `node scripts/build.mjs`. L’icône actuelle, un panier et une jeune plante, est dans `icons/product-guide.svg`.
 
 ## Ce que l’extension affiche
 
-- Les encarts portent clairement la mention **Open Food Facts**. Ils ne sont pas des notes Yuka.
-- Le code-barres EAN peut être affiché pour être scanné dans l’application Yuka, afin de consulter la note officielle dans Yuka.
+- Les repères de qualité indiquent clairement **Open Food Facts** comme source et ouvrent des pages d’information.
+- Le bouton du code-barres permet de l’afficher puis de le replier ; le code-barres EAN peut être scanné manuellement dans l’application Yuka.
 - Les résultats sont limités à dix nouveaux produits par page, espacés de quatre secondes, puis mis en cache 24 heures dans Firefox.
 - Le code-barres du produit est envoyé à Open Food Facts uniquement pour demander ses données. Aucune donnée de compte Leclerc ni donnée personnelle n’est transmise.
 
