@@ -21,10 +21,12 @@ Les fichiers de `src/` partagent un même contexte, dans l’ordre défini par `
 3. Ajouter uniquement le domaine nécessaire dans `host_permissions` et `content_scripts.matches` du manifeste Firefox.
 4. Tester les fiches et listes du site, les pages sans code-barres, la limite de requêtes et les changements dynamiques du DOM. Mettre à jour la politique de confidentialité et la fiche du store.
 
-## Ajouter un navigateur
+## Firefox et Chrome
 
-Le code fonctionnel est séparé du manifeste. `src/runtime.js` choisit l’API `browser` ou `chrome`. Pour un navigateur Chromium, créer un manifeste propre à ce navigateur, produire des icônes PNG adaptées et tester le chargement, le stockage, les permissions et les pages réelles avant publication. Le manifeste actuel et le paquet présent dans `dist/` sont réservés à Firefox.
+`manifest.json` reste le manifeste Firefox, avec son identifiant Gecko et ses métadonnées propres à AMO. `manifest.chrome.json` décrit le paquet Chromium : il retire ces champs Firefox et utilise les icônes PNG du navigateur. `scripts/build-content.mjs` assemble la même interface depuis les sources, avec un adaptateur de récupération OFF dédié à Chrome.
+
+Dans Chrome, le script injecté ne peut pas effectuer lui-même la requête cross-origin vers Open Food Facts. Il envoie uniquement un code-barres au service worker, qui vérifie que l’émetteur est une page HTTPS E.Leclerc Drive et que le code-barres est un GTIN valide avant la requête fixe vers Open Food Facts. Aucun URL fourni par la page n’est accepté. Cette voie garde le cache, le délai et la limite de recherches de la logique partagée. L’archive de test Chrome est générée avec `node scripts/package-chrome.mjs`; le mainteneur a confirmé un essai réussi dans Chrome. La publication au Chrome Web Store reste à faire.
 
 ## Vérification et publication
 
-Exécuter `node scripts/build.mjs`, puis `node scripts/build.mjs --check`, `node --check content.js`, `python3 -m json.tool manifest.json` et `git diff --check`. Charger ensuite `manifest.json` dans Firefox via `about:debugging` et vérifier une page E.Leclerc Drive. Pour produire un paquet non signé après le test, exécuter `node scripts/package.mjs` et `node scripts/package-source.mjs`.
+Exécuter `node scripts/build.mjs`, puis `node scripts/build.mjs --check`, `node --check content.js`, `python3 -m json.tool manifest.json` et `git diff --check`. Charger ensuite `manifest.json` dans Firefox via `about:debugging` et vérifier une page E.Leclerc Drive. Pour Firefox, produire les paquets avec `node scripts/package.mjs` et `node scripts/package-source.mjs`. Pour Chrome, générer le ZIP séparé avec `node scripts/package-chrome.mjs`, charger le dossier extrait dans `chrome://extensions`, puis vérifier le chargement, la requête OFF via le service worker, le stockage local, l’affichage et les interactions sur des pages réelles avant publication.

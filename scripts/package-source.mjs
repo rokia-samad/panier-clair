@@ -11,6 +11,7 @@ const slug = manifest.name.split(" — ")[0]
 const files = [
   "SOURCE-README.md", "ARCHITECTURE.md", "README.md", "CHANGELOG.md", "PRIVACY.md", "LICENSE",
   "manifest.json", "popup.html", "popup.css", "icons/product-guide.svg", "src", "scripts",
+  "manifest.chrome.json", "icons/panier-etiq-48.png", "icons/panier-etiq-128.png",
 ];
 await Promise.all(files.map((file) => access(resolve(root, file))));
 const archive = `dist/${slug}-${manifest.version}-source.zip`;
