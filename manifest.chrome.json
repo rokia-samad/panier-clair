@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Panier Etiq — Qualité produits",
+  "version": "0.3.3",
+  "description": "Nutri-Score, groupe NOVA et additifs Open Food Facts sur E.Leclerc Drive.",
+  "minimum_chrome_version": "99",
+  "permissions": ["storage"],
+  "icons": {
+    "48": "icons/panier-etiq-48.png",
+    "128": "icons/panier-etiq-128.png"
+  },
+  "action": {
+    "default_title": "Panier Etiq",
+    "default_icon": "icons/panier-etiq-48.png",
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "https://*.leclercdrive.fr/*",
+    "https://world.openfoodfacts.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.leclercdrive.fr/*"],
+      "js": ["chrome-bootstrap.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

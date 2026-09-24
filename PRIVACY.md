@@ -6,6 +6,6 @@ Panier Etiq fonctionne sur les pages E.Leclerc Drive. Pour récupérer les infor
 
 L’extension ne collecte pas d’identifiant de compte Leclerc, de mot de passe, de moyen de paiement, d’historique de navigation ni de donnée personnelle. Elle ne vend ni ne partage de données à des fins publicitaires.
 
-Les résultats Open Food Facts sont conservés pendant 24 heures dans le stockage local du navigateur afin de réduire le nombre de requêtes. Ils restent sur l’appareil de l’utilisateur et peuvent être supprimés en supprimant les données de l’extension dans Firefox.
+Les résultats Open Food Facts sont conservés pendant 24 heures dans le stockage local du navigateur afin de réduire le nombre de requêtes. Ils restent sur l’appareil de l’utilisateur et peuvent être supprimés en supprimant les données locales de l’extension dans les paramètres du navigateur.
 
 Pour signaler un problème, ouvrez une demande sur https://github.com/rokia-samad/panier-etiq/issues.
