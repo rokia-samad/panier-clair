@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title">
+  <title id="title">Panier et jeune plante</title>
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FAF9EC"/>
+      <stop offset="1" stop-color="#DCEEDC"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="22" fill="url(#base)"/>
+  <circle cx="49" cy="39" r="27" fill="#E4F2DB"/>
+  <path d="M33 53V43c0-9 6-15 15-15s15 6 15 15v10" fill="none" stroke="#246746" stroke-linecap="round" stroke-width="5"/>
+  <path d="M48 52V25" fill="none" stroke="#287B45" stroke-linecap="round" stroke-width="4"/>
+  <path d="M47 39C35 40 29 34 30 24c10 0 17 5 17 15Z" fill="#72BC69"/>
+  <path d="M49 35c0-11 7-17 18-15-1 10-7 16-18 15Z" fill="#389D58"/>
+  <path d="M25 54h46l-5 19c-.7 3-3.4 5-6.5 5h-23c-3.1 0-5.8-2-6.5-5l-5-19Z" fill="#246746"/>
+  <path d="M23 53h50" fill="none" stroke="#194F39" stroke-linecap="round" stroke-width="5"/>
+  <path d="m38 61 2 10m8-10v10m10-10-2 10" fill="none" stroke="#B8DEA5" stroke-linecap="round" stroke-width="3"/>
+</svg>

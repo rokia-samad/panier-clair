@@ -1,6 +1,8 @@
-# Panier Clair — Qualité produits
+# Panier Etiq — Qualité produits
 
 Extension Firefox pour E.Leclerc Drive. Sur les fiches et les listes où le code-barres est disponible, elle affiche le Nutri-Score, le groupe NOVA et les additifs renseignés par Open Food Facts.
+
+Le code source est réparti dans `src/`. Pour modifier l’extension, voir [ARCHITECTURE.md](ARCHITECTURE.md), puis lancer `node scripts/build.mjs`. L’icône actuelle, un panier et une jeune plante, est dans `icons/product-guide.svg`.
 
 ## Ce que l’extension affiche
 
@@ -28,6 +30,6 @@ L’extension ne lit ni l’historique, ni les onglets, ni les données de compt
 
 ## Installation durable
 
-Le paquet prêt à signer est `dist/panier-clair-0.2.0-unsigned.xpi`. Firefox standard demande une signature Mozilla : la procédure est dans [AMO-SUBMISSION.md](AMO-SUBMISSION.md).
+L’extension est sur [Mozilla Add-ons](https://addons.mozilla.org/fr/firefox/addon/panier-etiq/). La procédure de mise à jour et les commandes de création des paquets sont dans [AMO-SUBMISSION.md](AMO-SUBMISSION.md).
 
 La politique de confidentialité est dans [PRIVACY.md](PRIVACY.md).

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Panier Clair — Qualité produits",
-  "version": "0.2.0",
+  "name": "Panier Etiq — Qualité produits",
+  "version": "0.3.0",
   "description": "Les repères Open Food Facts pendant vos courses E.Leclerc Drive.",
   "browser_specific_settings": {
     "gecko": {
@@ -13,12 +13,12 @@
   },
   "permissions": ["storage"],
   "icons": {
-    "48": "icons/panier-clair.svg",
-    "96": "icons/panier-clair.svg"
+    "48": "icons/product-guide.svg",
+    "96": "icons/product-guide.svg"
   },
   "action": {
-    "default_title": "Panier Clair",
-    "default_icon": "icons/panier-clair.svg",
+    "default_title": "Panier Etiq",
+    "default_icon": "icons/product-guide.svg",
     "default_popup": "popup.html"
   },
   "host_permissions": [

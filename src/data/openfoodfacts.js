@@ -1,0 +1,33 @@
+  function cacheKey(barcode) {
+    return `off-product:${barcode}`;
+  }
+
+  async function readCache(barcode) {
+    const stored = await browserApi.storage.local.get(cacheKey(barcode));
+    const entry = stored[cacheKey(barcode)];
+    return entry && Date.now() - entry.savedAt < CACHE_TTL_MS ? entry.product : null;
+  }
+
+  async function fetchProduct(barcode) {
+    if (inFlight.has(barcode)) return inFlight.get(barcode);
+    const job = (async () => {
+      const cached = await readCache(barcode);
+      if (cached !== null) return cached;
+
+      const wait = Math.max(0, MIN_REQUEST_GAP_MS - (Date.now() - lastRequestAt));
+      if (wait) await new Promise((resolve) => setTimeout(resolve, wait));
+      lastRequestAt = Date.now();
+      const response = await fetch(`${OFF_API}${barcode}.json?fields=${OFF_FIELDS}`);
+      if (!response.ok) throw new Error(`Open Food Facts (${response.status})`);
+      const payload = await response.json();
+      const product = payload.status === 1 ? payload.product : false;
+      await browserApi.storage.local.set({ [cacheKey(barcode)]: { savedAt: Date.now(), product } });
+      return product;
+    })();
+    inFlight.set(barcode, job);
+    try {
+      return await job;
+    } finally {
+      inFlight.delete(barcode);
+    }
+  }
