@@ -1,5 +1,5 @@
   function cacheKey(barcode) {
-    return `off-product:${barcode}`;
+    return `off-product:v2:${barcode}`;
   }
 
   async function readCache(barcode) {

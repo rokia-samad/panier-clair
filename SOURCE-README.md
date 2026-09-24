@@ -1,4 +1,4 @@
-# Panier Etiq 0.3.1 — source build instructions for AMO reviewers
+# Panier Etiq 0.3.2 — source build instructions for AMO reviewers
 
 The extension is built from plain JavaScript in `src/`. There are no third-party dependencies, minification, network downloads, or package manager steps. `scripts/build.mjs` concatenates the source files in a fixed order into `content.js`.
 
@@ -12,4 +12,4 @@ node scripts/build.mjs --check
 node scripts/package.mjs
 ```
 
-The generated `content.js` should match the file in the submitted `panier-etiq-0.3.1-unsigned.xpi`. The XPI is written to `dist/` by the last command. No generated files are included in this source archive.
+The generated `content.js` should match the file in the submitted `panier-etiq-0.3.2-unsigned.xpi`. The XPI is written to `dist/` by the last command. No generated files are included in this source archive.

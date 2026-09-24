@@ -1,7 +1,14 @@
-  function additiveLabel(product) {
-    const additives = product.additives_original_tags || product.additives_tags || [];
-    if (!additives.length) return "Aucun additif renseigné";
-    return `${additives.length} additif${additives.length > 1 ? "s" : ""} renseigné${additives.length > 1 ? "s" : ""}`;
+  function additiveNames(product) {
+    const tags = Array.isArray(product.additives_tags) ? product.additives_tags
+      : Array.isArray(product.additives_original_tags) ? product.additives_original_tags : [];
+    const frenchNames = Array.isArray(product.additives_tags_fr) ? product.additives_tags_fr : [];
+    if (!tags.length) return frenchNames.filter(Boolean);
+    return tags.map((tag, index) => frenchNames[index]
+      || String(tag).replace(/^[a-z]{2}:/i, "").replace(/^e(\d+)/i, "E$1"));
+  }
+
+  function additiveLabel(count) {
+    return `${count} additif${count > 1 ? "s" : ""} renseigné${count > 1 ? "s" : ""}`;
   }
 
   function makeElement(tagName, className, text) {
@@ -80,6 +87,12 @@
       .chip { border-radius: 999px; padding: 3px 6px; background: #e3efe5; white-space: nowrap; }
       .nutri-a { background: #0b8a3b; color: white; } .nutri-b { background: #4cae4f; color: white; } .nutri-c { background: #f3c242; color: #3a2b00; } .nutri-d { background: #eb7a34; color: white; } .nutri-e { background: #d9423a; color: white; }
       button { margin-top: 6px; padding: 0; border: 0; background: transparent; color: #1c5d31; font: inherit; text-decoration: underline; cursor: pointer; }
+      .additive-toggle { margin-top: 0; padding: 3px 6px; background: #e3efe5; color: #16331e; text-decoration: none; }
+      .additive-toggle:hover { background: #d5e8da; }
+      .additive-toggle:focus-visible { outline: 2px solid #1c5d31; outline-offset: 2px; }
+      .additive-details { margin-top: 7px; }
+      .additive-details ul { margin: 3px 0 0; padding-left: 19px; }
+      .additive-details li { margin: 2px 0; }
       .barcode-wrap { margin-top: 7px; } .barcode { display: block; width: min(100%, 310px); height: auto; }
       .muted { color: #53645a; } .error { color: #9d241d; }`;
     const card = makeElement("div", "card");
@@ -101,15 +114,37 @@
       setMessage(widget, "Produit non trouvé dans Open Food Facts.");
       return;
     }
-    const grade = String(product.nutriscore_grade || "?").toUpperCase();
-    const gradeClass = /^[A-E]$/.test(grade) ? `nutri-${grade.toLowerCase()}` : "";
+    const rawGrade = String(product.nutriscore_grade || "").toUpperCase();
+    const gradeClass = /^[A-E]$/.test(rawGrade) ? `nutri-${rawGrade.toLowerCase()}` : "";
+    const grade = gradeClass ? rawGrade : "INCONNU";
     const nova = product.nova_group ? `NOVA ${product.nova_group}` : "NOVA non renseigné";
+    const additives = additiveNames(product);
     const grid = makeElement("div", "grid");
     grid.append(
       makeElement("span", `chip ${gradeClass}`, `Nutri-Score ${grade}`),
-      makeElement("span", "chip", nova),
-      makeElement("span", "chip", additiveLabel(product))
+      makeElement("span", "chip", nova)
     );
+    let additiveDetails;
+    if (additives.length) {
+      const toggle = makeElement("button", "chip additive-toggle", additiveLabel(additives.length));
+      toggle.type = "button";
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-controls", "qd-additives-details");
+      additiveDetails = makeElement("div", "additive-details");
+      additiveDetails.id = "qd-additives-details";
+      additiveDetails.hidden = true;
+      additiveDetails.append(makeElement("div", "muted", "Additifs selon Open Food Facts :"));
+      const list = makeElement("ul");
+      for (const additive of additives) list.append(makeElement("li", "", additive));
+      additiveDetails.append(list);
+      toggle.addEventListener("click", () => {
+        additiveDetails.hidden = !additiveDetails.hidden;
+        toggle.setAttribute("aria-expanded", String(!additiveDetails.hidden));
+      });
+      grid.append(toggle);
+    } else {
+      grid.append(makeElement("span", "chip", "Aucun additif renseigné"));
+    }
     const button = makeElement("button", "", "Afficher le code-barres à scanner avec Yuka");
     button.type = "button";
     const barcodeWrap = makeElement("div", "barcode-wrap");
@@ -123,7 +158,8 @@
       barcodeWrap.hidden = false;
     });
     widget.card.replaceChildren(
-      makeElement("div", "title", "Qualité — Open Food Facts"), grid, button, barcodeWrap
+      makeElement("div", "title", "Qualité — Open Food Facts"), grid,
+      ...(additiveDetails ? [additiveDetails] : []), button, barcodeWrap
     );
   }
 
