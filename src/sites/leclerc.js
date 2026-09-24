@@ -39,6 +39,15 @@
     const targets = [];
     const seen = new Set();
     const leclercCodes = leclercBarcodes();
+    const currentProductId = location.pathname.match(/fiche-produits-(\d+)-/i)?.[1];
+    if (currentProductId) {
+      const title = document.querySelector("section.fiche-produit h1.titre-fiche");
+      if (!title) return targets; // Leclerc fills the product header after document_idle.
+      const barcode = barcodeFromJsonLd() || leclercCodes.get(currentProductId)
+        || barcodeFromText(document.body?.innerText);
+      if (barcode) targets.push({ barcode, container: title.parentElement, title, page: true });
+      return targets;
+    }
     const dataSelectors = "[data-ean], [data-gtin], [data-barcode], [itemprop*='gtin' i], [itemprop*='barcode' i]";
     for (const element of root.querySelectorAll?.(dataSelectors) || []) {
       const barcode = barcodeFromElement(element);
@@ -59,13 +68,5 @@
       }
     }
 
-    const pageBarcode = barcodeFromJsonLd() || barcodeFromText(document.body?.innerText);
-    const currentProductId = location.pathname.match(/fiche-produits-(\d+)-/i)?.[1];
-    const leclercPageBarcode = currentProductId && leclercCodes.get(currentProductId);
-    const resolvedPageBarcode = pageBarcode || leclercPageBarcode;
-    if (resolvedPageBarcode && !targets.some((target) => target.barcode === resolvedPageBarcode)) {
-      const headline = document.querySelector("h1") || document.body;
-      targets.push({ barcode: resolvedPageBarcode, container: headline.parentElement || document.body, page: true });
-    }
     return targets;
   }

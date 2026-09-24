@@ -12,7 +12,7 @@
 | `src/main.js` | Observation de la page et montage des encarts. |
 | `scripts/build.mjs` | Assemble les sources dans `content.js`. |
 
-Le code assemblé garde le comportement de la version 0.2.0. Les fichiers de `src/` partagent un même contexte, dans l’ordre défini par `scripts/build.mjs` : il faut conserver cet ordre lorsque des fonctions dépendent les unes des autres.
+Les fichiers de `src/` partagent un même contexte, dans l’ordre défini par `scripts/build.mjs` : il faut conserver cet ordre lorsque des fonctions dépendent les unes des autres. Sur une fiche Leclerc, l’encart attend le titre du produit et l’observateur le replace sous ce titre si la page le déplace.
 
 ## Ajouter un site
 
