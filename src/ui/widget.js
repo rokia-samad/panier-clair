@@ -1,10 +1,17 @@
-  function additiveNames(product) {
+  function additiveEntries(product) {
     const tags = Array.isArray(product.additives_tags) ? product.additives_tags
       : Array.isArray(product.additives_original_tags) ? product.additives_original_tags : [];
     const frenchNames = Array.isArray(product.additives_tags_fr) ? product.additives_tags_fr : [];
-    if (!tags.length) return frenchNames.filter(Boolean);
-    return tags.map((tag, index) => frenchNames[index]
-      || String(tag).replace(/^[a-z]{2}:/i, "").replace(/^e(\d+)/i, "E$1"));
+    if (!tags.length) return frenchNames.filter(Boolean).map((name) => ({ name, url: null }));
+    return tags.map((tag, index) => {
+      const id = String(tag).replace(/^[a-z]{2}:/i, "");
+      const name = frenchNames[index]
+        || id.replace(/^e(\d+)/i, "E$1");
+      const url = /^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(id)
+        ? `https://world.openfoodfacts.org/additive/${encodeURIComponent(id)}`
+        : null;
+      return { name, url };
+    });
   }
 
   function additiveLabel(count) {
@@ -16,6 +23,14 @@
     if (className) element.className = className;
     if (text !== undefined) element.textContent = text;
     return element;
+  }
+
+  function makeExternalLink(text, url, className = "") {
+    const link = makeElement("a", className, text);
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    return link;
   }
 
   // A self-contained EAN renderer: no image is fetched and the bars encode the
@@ -90,6 +105,10 @@
       .additive-toggle { margin-top: 0; padding: 3px 6px; background: #e3efe5; color: #16331e; text-decoration: none; }
       .additive-toggle:hover { background: #d5e8da; }
       .additive-toggle:focus-visible { outline: 2px solid #1c5d31; outline-offset: 2px; }
+      .chip-link { color: inherit; text-decoration: none; }
+      .chip-link:hover, .additive-link:hover { text-decoration: underline; }
+      .chip-link:focus-visible, .additive-link:focus-visible { outline: 2px solid #1c5d31; outline-offset: 2px; }
+      .additive-link { color: #1c5d31; }
       .additive-details { margin-top: 7px; }
       .additive-details ul { margin: 3px 0 0; padding-left: 19px; }
       .additive-details li { margin: 2px 0; }
@@ -118,11 +137,11 @@
     const gradeClass = /^[A-E]$/.test(rawGrade) ? `nutri-${rawGrade.toLowerCase()}` : "";
     const grade = gradeClass ? rawGrade : "INCONNU";
     const nova = product.nova_group ? `NOVA ${product.nova_group}` : "NOVA non renseigné";
-    const additives = additiveNames(product);
+    const additives = additiveEntries(product);
     const grid = makeElement("div", "grid");
     grid.append(
-      makeElement("span", `chip ${gradeClass}`, `Nutri-Score ${grade}`),
-      makeElement("span", "chip", nova)
+      makeExternalLink(`Nutri-Score ${grade}`, "https://www.santepubliquefrance.fr/nutrition-et-activite-physique/nutri-score", `chip ${gradeClass} chip-link`),
+      makeExternalLink(nova, "https://world.openfoodfacts.org/nova", "chip chip-link")
     );
     let additiveDetails;
     if (additives.length) {
@@ -135,7 +154,13 @@
       additiveDetails.hidden = true;
       additiveDetails.append(makeElement("div", "muted", "Additifs selon Open Food Facts :"));
       const list = makeElement("ul");
-      for (const additive of additives) list.append(makeElement("li", "", additive));
+      for (const additive of additives) {
+        const item = makeElement("li", "");
+        item.append(additive.url
+          ? makeExternalLink(additive.name, additive.url, "additive-link")
+          : document.createTextNode(additive.name));
+        list.append(item);
+      }
       additiveDetails.append(list);
       toggle.addEventListener("click", () => {
         additiveDetails.hidden = !additiveDetails.hidden;
@@ -147,7 +172,10 @@
     }
     const button = makeElement("button", "", "Afficher le code-barres à scanner avec Yuka");
     button.type = "button";
+    button.setAttribute("aria-expanded", "false");
     const barcodeWrap = makeElement("div", "barcode-wrap");
+    barcodeWrap.id = `qd-barcode-${widget.barcode}`;
+    button.setAttribute("aria-controls", barcodeWrap.id);
     barcodeWrap.hidden = true;
     const barcode = eanSvg(widget.barcode);
     if (barcode) barcodeWrap.append(barcode);
@@ -155,7 +183,11 @@
       ? "Scanne ce code dans l’application Yuka pour voir sa note officielle."
       : `Code-barres : ${widget.barcode}`));
     button.addEventListener("click", () => {
-      barcodeWrap.hidden = false;
+      barcodeWrap.hidden = !barcodeWrap.hidden;
+      button.setAttribute("aria-expanded", String(!barcodeWrap.hidden));
+      button.textContent = barcodeWrap.hidden
+        ? "Afficher le code-barres à scanner avec Yuka"
+        : "Masquer le code-barres";
     });
     widget.card.replaceChildren(
       makeElement("div", "title", "Qualité — Open Food Facts"), grid,
