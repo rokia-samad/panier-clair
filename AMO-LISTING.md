@@ -6,7 +6,7 @@ Panier Etiq — Nutri-Score, NOVA et additifs
 
 ## Résumé court
 
-Affichez le Nutri-Score, le groupe NOVA et les additifs directement sur E.Leclerc Drive, grâce aux données Open Food Facts.
+Nutri-Score, NOVA et additifs Open Food Facts sur E.Leclerc Drive. Affichez le code-barres pour le scanner dans Yuka.
 
 ## Description complète
 
@@ -16,9 +16,13 @@ Sur E.Leclerc Drive, Panier Etiq affiche dans les fiches et les listes de produi
 
 - le Nutri-Score ;
 - le groupe NOVA ;
-- le nombre d’additifs renseignés, avec leur détail après un clic.
+- le nombre d’additifs renseignés.
 
-Vous pouvez aussi afficher le code-barres du produit pour le scanner manuellement dans Yuka et consulter sa note dans l’application. **Panier Etiq ne calcule et n’affiche aucune note Yuka** : les repères présentés dans Drive proviennent d’Open Food Facts.
+Cliquez sur Nutri-Score ou NOVA pour ouvrir une page d’explication. Le bouton des additifs affiche leur détail ; chaque additif renvoie vers sa fiche Open Food Facts.
+
+### Retrouvez aussi les informations Yuka
+
+Vous pouvez afficher le code-barres du produit, puis le replier en cliquant de nouveau sur le bouton. Scannez ce code manuellement dans l’application Yuka pour consulter les informations proposées par Yuka, notamment sa note. **Panier Etiq ne calcule et n’affiche aucune note Yuka** : les repères présentés dans Drive proviennent d’Open Food Facts.
 
 ### Des données qui peuvent manquer
 
