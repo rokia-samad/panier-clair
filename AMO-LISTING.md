@@ -12,7 +12,7 @@ Nutri-Score, NOVA et additifs Open Food Facts sur E.Leclerc Drive. Affichez le c
 
 ### Les repères produit, directement pendant vos courses
 
-Sur E.Leclerc Drive, Panier Etiq affiche dans les fiches et les listes de produits, lorsque le code-barres est disponible, les informations Open Food Facts suivantes :
+Sur E.Leclerc Drive, Panier Etiq affiche dans les fiches et les listes de produits, lorsque le code-barres est disponible, les informations issues d’Open Food Facts :
 
 - le Nutri-Score ;
 - le groupe NOVA ;
