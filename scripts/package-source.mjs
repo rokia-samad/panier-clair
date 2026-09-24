@@ -9,7 +9,7 @@ const slug = manifest.name.split(" — ")[0]
   .normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
   .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const files = [
-  "SOURCE-README.md", "ARCHITECTURE.md", "README.md", "PRIVACY.md", "LICENSE",
+  "SOURCE-README.md", "ARCHITECTURE.md", "README.md", "CHANGELOG.md", "PRIVACY.md", "LICENSE",
   "manifest.json", "popup.html", "popup.css", "icons/product-guide.svg", "src", "scripts",
 ];
 await Promise.all(files.map((file) => access(resolve(root, file))));

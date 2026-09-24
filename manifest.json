@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Panier Etiq — Qualité produits",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Les repères Open Food Facts pendant vos courses E.Leclerc Drive.",
   "browser_specific_settings": {
     "gecko": {
