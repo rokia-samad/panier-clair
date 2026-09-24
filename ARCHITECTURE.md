@@ -25,7 +25,7 @@ Les fichiers de `src/` partagent un même contexte, dans l’ordre défini par `
 
 `manifest.json` reste le manifeste Firefox, avec son identifiant Gecko et ses métadonnées propres à AMO. `manifest.chrome.json` décrit le paquet Chromium : il retire ces champs Firefox et utilise les icônes PNG du navigateur. `scripts/build-content.mjs` assemble la même interface depuis les sources, avec un adaptateur de récupération OFF dédié à Chrome.
 
-Dans Chrome, le script injecté ne peut pas effectuer lui-même la requête cross-origin vers Open Food Facts. Il envoie uniquement un code-barres au service worker, qui vérifie que l’émetteur est une page HTTPS E.Leclerc Drive et que le code a une longueur GTIN reconnue avant la requête fixe vers Open Food Facts. Aucun URL fourni par la page n’est accepté. Cette voie garde le cache, le délai et la limite de recherches de la logique partagée. L’archive de test Chrome est générée avec `node scripts/package-chrome.mjs`; elle doit encore être testée dans Chrome réel avant toute publication au Chrome Web Store.
+Dans Chrome, le script injecté ne peut pas effectuer lui-même la requête cross-origin vers Open Food Facts. Il envoie uniquement un code-barres au service worker, qui vérifie que l’émetteur est une page HTTPS E.Leclerc Drive et que le code-barres est un GTIN valide avant la requête fixe vers Open Food Facts. Aucun URL fourni par la page n’est accepté. Cette voie garde le cache, le délai et la limite de recherches de la logique partagée. L’archive de test Chrome est générée avec `node scripts/package-chrome.mjs`; le mainteneur a confirmé un essai réussi dans Chrome. La publication au Chrome Web Store reste à faire.
 
 ## Vérification et publication
 

@@ -21,4 +21,4 @@ Décompresser `dist/panier-etiq-0.3.3-chrome.zip`, ouvrir `chrome://extensions`,
 
 ## État
 
-Le paquet est préparé, mais aucun Chrome réel n’est disponible dans l’environnement de travail pour valider le cycle complet. Avant une publication au Chrome Web Store, vérifier dans Chrome réel le chargement du manifeste, le service worker et ses erreurs, le fetch vers Open Food Facts, le cache, les pages E.Leclerc Drive (liste et fiche produit), le repli du code-barres, les détails d’additifs et les liens externes. La publication sur le Chrome Web Store n’a pas été effectuée.
+Le mainteneur a chargé et testé l’extension dans Chrome, et confirme que son fonctionnement est réussi. La publication sur le Chrome Web Store n’a pas été effectuée.

@@ -2,7 +2,7 @@
 
 Panier Etiq affiche directement sur **E.Leclerc Drive** le **Nutri-Score**, le **groupe NOVA** et les additifs renseignés dans **Open Food Facts**. Cliquez sur Nutri-Score ou NOVA pour ouvrir une page d’explication ; cliquez sur le nombre d’additifs pour afficher leur détail, puis sur un additif pour consulter sa fiche Open Food Facts.
 
-[Installer Panier Etiq sur Firefox](https://addons.mozilla.org/fr/firefox/addon/panier-etiq/). Le portage Chrome est en préparation : il n’est pas encore publié sur le Chrome Web Store.
+[Installer Panier Etiq sur Firefox](https://addons.mozilla.org/fr/firefox/addon/panier-etiq/). Le paquet Chrome est prêt pour une installation manuelle et a été testé avec succès ; il n’est pas encore publié sur le Chrome Web Store.
 
 Pour consulter les informations que **Yuka** propose sur un produit, affichez son code-barres dans Panier Etiq et scannez-le manuellement dans l’application Yuka. La note consultée est fournie par Yuka : Panier Etiq ne calcule ni n’affiche de note Yuka. Le projet est indépendant et ne collecte pas de données personnelles.
 
@@ -34,7 +34,7 @@ L’extension ne lit ni l’historique, ni les onglets, ni les données de compt
 
 ## Paquet de test Chrome
 
-Le portage Chrome est expérimental et n’a pas encore été validé dans un navigateur Chrome réel. Pour produire son archive, exécutez `node scripts/package-chrome.mjs`, décompressez `dist/panier-etiq-0.3.3-chrome.zip`, puis dans Chrome ouvrez `chrome://extensions`, activez le **mode développeur** et choisissez **Charger l’extension non empaquetée** en sélectionnant le dossier extrait. Voir [CHROME-PORT.md](CHROME-PORT.md) pour les adaptations et vérifications restantes.
+Pour installer le paquet Chrome, exécutez `node scripts/package-chrome.mjs`, décompressez `dist/panier-etiq-0.3.3-chrome.zip`, puis dans Chrome ouvrez `chrome://extensions`, activez le **mode développeur** et choisissez **Charger l’extension non empaquetée** en sélectionnant le dossier extrait. L’extension a été testée avec succès dans Chrome ; voir [CHROME-PORT.md](CHROME-PORT.md) pour les détails du portage. Elle n’est pas encore publiée sur le Chrome Web Store.
 
 ## Installation durable
 
