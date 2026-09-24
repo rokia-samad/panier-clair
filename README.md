@@ -1,6 +1,10 @@
-# Panier Etiq — Qualité produits
+# Panier Etiq — Nutri-Score, NOVA et additifs sur E.Leclerc Drive
 
-Extension Firefox pour E.Leclerc Drive. Sur les fiches et les listes où le code-barres est disponible, elle affiche le Nutri-Score, le groupe NOVA et les additifs renseignés par Open Food Facts. Un clic sur le nombre d’additifs affiche leur détail lorsque ces données sont disponibles.
+Panier Etiq est une extension Firefox qui affiche directement pendant vos courses sur **E.Leclerc Drive** le **Nutri-Score**, le **groupe NOVA** et les **additifs renseignés** dans **Open Food Facts**. Cliquez sur le nombre d’additifs pour en consulter le détail.
+
+[Installer Panier Etiq sur Mozilla Add-ons](https://addons.mozilla.org/fr/firefox/addon/panier-etiq/).
+
+Panier Etiq n’affiche pas de note Yuka : le code-barres peut être affiché pour un scan manuel dans l’application Yuka. Le projet est indépendant et ne collecte pas de données personnelles.
 
 Le code source est réparti dans `src/`. Pour modifier l’extension, voir [ARCHITECTURE.md](ARCHITECTURE.md), puis lancer `node scripts/build.mjs`. L’icône actuelle, un panier et une jeune plante, est dans `icons/product-guide.svg`.
 
